@@ -119,4 +119,9 @@
     <string name="theme_light">浅色</string>
     <string name="theme_dark">深色</string>
     <string name="auto">自动</string>
+    <string name="vpn_ipv4">VPN IPv4</string>
+    <string name="vpn_ipv6">VPN IPv6</string>
+    <string name="vpn_mtu">VPN MTU</string>
+    <string name="invalid_mtu_range">MTU 必须在 68 到 65535 之间</string>
+    <string name="invalid_mtu">请输入有效的 MTU</string>
 </resources>
