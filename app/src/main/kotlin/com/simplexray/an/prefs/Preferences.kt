@@ -181,17 +181,33 @@ class Preferences(context: Context) {
             setValueInProvider(DISABLE_VPN, value)
         }
 
-    val tunnelMtu: Int
-        get() = 8500
+    var tunnelMtu: Int
+        get() {
+            val value = getPrefData(VPN_MTU).first
+            val mtu = value?.toIntOrNull()
+            if (value != null && mtu == null) {
+                Log.e(TAG, "Failed to parse SocksPort as Integer: $mtu")
+            }
+            return mtu ?: 65535
+        }
+        set(port) {
+            setValueInProvider(VPN_MTU, port.toString())
+        }
 
-    val tunnelIpv4Address: String
-        get() = "198.18.0.1"
+    var tunnelIpv4Address: String
+        get() = getPrefData(VPN_IPV4).first ?: "172.31.0.1"
+        set(addr) {
+            setValueInProvider(VPN_IPV4, addr)
+        }
 
     val tunnelIpv4Prefix: Int
         get() = 32
 
-    val tunnelIpv6Address: String
-        get() = "fc00::1"
+    var tunnelIpv6Address: String
+        get() = getPrefData(VPN_IPV6).first ?: "fc00::172:31:0:1"
+        set(addr) {
+            setValueInProvider(VPN_IPV6, addr)
+        }
 
     val tunnelIpv6Prefix: Int
         get() = 128
@@ -307,6 +323,9 @@ class Preferences(context: Context) {
         const val SOCKS_PASS: String = "SocksPass"
         const val DNS_IPV4: String = "DnsIpv4"
         const val DNS_IPV6: String = "DnsIpv6"
+        const val VPN_IPV4: String = "VpnIpv4"
+        const val VPN_IPV6: String = "VpnIpv6"
+        const val VPN_MTU: String = "VpnMtu"
         const val IPV4: String = "Ipv4"
         const val IPV6: String = "Ipv6"
         const val GLOBAL: String = "Global"
