@@ -174,6 +174,10 @@ class FileManager(private val application: Application, private val prefs: Prefe
                 preferencesMap[Preferences.SOCKS_PORT] = prefs.socksPort
                 preferencesMap[Preferences.DNS_IPV4] = prefs.dnsIpv4
                 preferencesMap[Preferences.DNS_IPV6] = prefs.dnsIpv6
+                preferencesMap[Preferences.VPN_IPV4] = prefs.tunnelIpv4Address
+                preferencesMap[Preferences.VPN_IPV6] = prefs.tunnelIpv6Address
+                preferencesMap[Preferences.VPN_MTU] = prefs.tunnelMtu
+                preferencesMap[Preferences.DNS_IPV6] = prefs.dnsIpv6
                 preferencesMap[Preferences.IPV6] = prefs.ipv6
                 preferencesMap[Preferences.APPS] = ArrayList(
                     prefs.apps ?: emptySet()
@@ -317,6 +321,27 @@ class FileManager(private val application: Application, private val prefs: Prefe
                     value = preferencesMap[Preferences.DNS_IPV6]
                     if (value is String) {
                         prefs.dnsIpv6 = (value as String?)!!
+                    }
+
+                    value = preferencesMap[Preferences.VPN_IPV4]
+                    if (value is String) {
+                        prefs.tunnelIpv4Address = (value as String?)!!
+                    }
+
+                    value = preferencesMap[Preferences.VPN_IPV6]
+                    if (value is String) {
+                        prefs.tunnelIpv6Address = (value as String?)!!
+                    }
+
+                    value = preferencesMap[Preferences.VPN_MTU]
+                    if (value is Number) {
+                        prefs.tunnelMtu = value.toInt()
+                    } else if (value is String) {
+                        try {
+                            prefs.tunnelMtu = value.toInt()
+                        } catch (ignore: NumberFormatException) {
+                            Log.w(TAG, "Failed to parse VPN_MTU as integer: $value")
+                        }
                     }
 
                     value = preferencesMap[Preferences.IPV6]
