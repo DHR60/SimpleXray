@@ -86,6 +86,9 @@ class MainViewModel(application: Application) :
             socksPort = InputFieldState(prefs.socksPort.toString()),
             dnsIpv4 = InputFieldState(prefs.dnsIpv4),
             dnsIpv6 = InputFieldState(prefs.dnsIpv6),
+            vpnIpv4 = InputFieldState(prefs.tunnelIpv4Address),
+            vpnIpv6 = InputFieldState(prefs.tunnelIpv6Address),
+            vpnMtu = InputFieldState(prefs.tunnelMtu.toString()),
             switches = SwitchStates(
                 ipv6Enabled = prefs.ipv6,
                 useTemplateEnabled = prefs.useTemplate,
@@ -442,6 +445,77 @@ class MainViewModel(application: Application) :
                 dnsIpv6 = InputFieldState(
                     value = ipv6Addr,
                     error = application.getString(R.string.invalid_ipv6),
+                    isValid = false
+                )
+            )
+            false
+        }
+    }
+
+    fun updateVpnIpv4(ipv4Addr: String): Boolean {
+        val matcher = IPV4_PATTERN.matcher(ipv4Addr)
+        return if (matcher.matches()) {
+            prefs.tunnelIpv4Address = ipv4Addr
+            _settingsState.value = _settingsState.value.copy(
+                vpnIpv4 = InputFieldState(ipv4Addr)
+            )
+            true
+        } else {
+            _settingsState.value = _settingsState.value.copy(
+                vpnIpv4 = InputFieldState(
+                    value = ipv4Addr,
+                    error = application.getString(R.string.invalid_ipv4),
+                    isValid = false
+                )
+            )
+            false
+        }
+    }
+
+    fun updateVpnIpv6(ipv6Addr: String): Boolean {
+        val matcher = IPV6_PATTERN.matcher(ipv6Addr)
+        return if (matcher.matches()) {
+            prefs.tunnelIpv6Address = ipv6Addr
+            _settingsState.value = _settingsState.value.copy(
+                vpnIpv6 = InputFieldState(ipv6Addr)
+            )
+            true
+        } else {
+            _settingsState.value = _settingsState.value.copy(
+                vpnIpv6 = InputFieldState(
+                    value = ipv6Addr,
+                    error = application.getString(R.string.invalid_ipv6),
+                    isValid = false
+                )
+            )
+            false
+        }
+    }
+
+    fun updateVpnMtu(mtuString: String): Boolean {
+        return try {
+            val mtu = mtuString.toInt()
+            if (mtu > 65535 || mtu < 68) {
+                prefs.tunnelMtu = mtu
+                _settingsState.value = _settingsState.value.copy(
+                    vpnMtu = InputFieldState(mtuString)
+                )
+                true
+            } else {
+                _settingsState.value = _settingsState.value.copy(
+                    socksPort = InputFieldState(
+                        value = mtuString,
+                        error = application.getString(R.string.invalid_mtu_range),
+                        isValid = false
+                    )
+                )
+                false
+            }
+        } catch (e: NumberFormatException) {
+            _settingsState.value = _settingsState.value.copy(
+                socksPort = InputFieldState(
+                    value = mtuString,
+                    error = application.getString(R.string.invalid_mtu),
                     isValid = false
                 )
             )

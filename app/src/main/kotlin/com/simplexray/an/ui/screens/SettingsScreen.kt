@@ -409,6 +409,45 @@ fun SettingsScreen(
             scope = scope
         )
 
+        EditableListItemWithBottomSheet(
+            headline = stringResource(R.string.vpn_ipv4),
+            currentValue = settingsState.vpnIpv4.value,
+            onValueConfirmed = { newValue -> mainViewModel.updateVpnIpv4(newValue) },
+            label = stringResource(R.string.vpn_ipv4),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isError = !settingsState.vpnIpv4.isValid,
+            errorMessage = settingsState.vpnIpv4.error,
+            enabled = !vpnDisabled,
+            sheetState = sheetState,
+            scope = scope
+        )
+
+        EditableListItemWithBottomSheet(
+            headline = stringResource(R.string.vpn_ipv6),
+            currentValue = settingsState.vpnIpv6.value,
+            onValueConfirmed = { newValue -> mainViewModel.updateVpnIpv6(newValue) },
+            label = stringResource(R.string.vpn_ipv6),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+            isError = !settingsState.vpnIpv6.isValid,
+            errorMessage = settingsState.vpnIpv6.error,
+            enabled = settingsState.switches.ipv6Enabled && !vpnDisabled,
+            sheetState = sheetState,
+            scope = scope
+        )
+
+        EditableListItemWithBottomSheet(
+            headline = stringResource(R.string.vpn_mtu),
+            currentValue = settingsState.vpnMtu.value,
+            onValueConfirmed = { newValue -> mainViewModel.updateVpnMtu(newValue) },
+            label = stringResource(R.string.vpn_mtu),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isError = !settingsState.vpnMtu.isValid,
+            errorMessage = settingsState.vpnMtu.error,
+            enabled = !vpnDisabled,
+            sheetState = sheetState,
+            scope = scope
+        )
+
         ListItem(
             headlineContent = { Text(stringResource(R.string.ipv6)) },
             supportingContent = { Text(stringResource(R.string.ipv6_enabled)) },

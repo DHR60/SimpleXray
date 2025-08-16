@@ -124,4 +124,9 @@
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="auto">Auto</string>
+    <string name="vpn_ipv4">VPN IPv4</string>
+    <string name="vpn_ipv6">VPN IPv6</string>
+    <string name="vpn_mtu">VPN MTU</string>
+    <string name="invalid_mtu_range">MTU must be between 68 and 65535</string>
+    <string name="invalid_mtu">Please enter a valid MTU</string>
 </resources>
